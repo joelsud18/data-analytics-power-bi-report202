@@ -10,6 +10,7 @@ By **Joel Sud**
     - [Milestone 2](#milestone-2)
     - [Milestone 3](#milestone-3)
     - [Milestone 5](#milestone-5)
+    - [Milestone 6](#milestone-6)
 
 ## Description: 
 This is an Ai Core project with the aim of conducting data analysis on a Orders database in Power BI.
@@ -31,12 +32,16 @@ This is an Ai Core project with the aim of conducting data analysis on a Orders 
 - subsidiary_material
     - data_model.png
     - customer_detail.png
+    - executive_summary.png
 
 ### Understanding the Files:
 - **data_analytics_report.pbix**: This is the Power BI file which contains the data models, queries and report with visuals.
 - **subsidiary_material**: This is a folder that contains subsidiary material such as .png screenshots of the data model or report.
 
 ## Project Documentation
+
+This section shows documentation of the steps and tasks undertaken to complete key milestones. Insignificant milestones that contained minimal or insiginficant tasks were excluded.
+
 ### Milestone 2:
 - Once the .pbix file was created, the first step was to import the 'Orders' fact table. This was imported from an Azure SQL database.
     - Confidential columns were deleted; Date columns were split between date and time and rows with missing values were removed.
@@ -144,3 +149,27 @@ CALCULATE(
 The following image shows the customer detail page at this point:
 
 ![Data Model](subsidiary_material/customer_detail.png)
+
+### Milestone 6:
+
+- This milestone focused on developing the executive summary page. This started off with generating the summary cards. Three cards were inputted which displayed the total revenue, total profit and total orders measures.
+- Following this a line chart was added, this used the date hierarchy from start of year down to start of month, however the y-axis displayed total revenue.
+- Two donut charts were then added, both displayed the total revenue however one was filtered by country and the other by store type in the legend.
+- After this, a clustered bar chart was added, this used product category in the y-axis and total orders in the x-axis.
+- Finally the KPI cards were added, these were done for total revenue, total profit and total orders in the current quarter.
+    - to generate this first new measures were made, this was previous quarter revenue, profit and orders. the following DAX formula shows how this was created for the example of previous quarter profit:
+
+    ***<p style="text-align: center;">Previous Quarter Profit = CALCULATE(
+    SUMX(Orders, (RELATED(Products[Sale Price]) - RELATED(Products[Cost Price])) * ORDERS[Product Quantity]),
+    PREVIOUSQUARTER(Dates[Date])
+)***</p>
+
+    - This was followed by generating a target revenue, profit and orders for the current quarter which would be a 5 % increase from the previous quarter. The following is an example of the DAX code for the target profit as an example:
+
+    ***<p style="text-align: center;">Target Profit = 'Measures Table'[Previous Quarter Profit] * 1.05***</p>
+
+    - This was followed by creating the KPI visual with in the case of profit, the total profit as the value, the start of quarter as the trend axis and the target profit for the target. This was also done for revenue and orders.
+
+The following image shows the executive summary page at this point:
+
+![Data Model](subsidiary_material/executive_summary.png)
