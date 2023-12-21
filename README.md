@@ -99,12 +99,10 @@ This section shows documentation of the steps and tasks undertaken to complete k
 
     ***<p style="text-align: center;">Total Orders = COUNT(Orders[Order Date])***</p>
     ***<p style="text-align: center;">Total Revenue = SUMX(Orders, Orders[Product Quantity] * RELATED(Products[Sale Price]))***</p>
-    ***<p style="text-align: center;">Profit YTD = SUMX(
-    FILTER(
-        Orders,
-        RELATED(Dates[Year]) = 2023
-    ),
-    (RELATED(Products[Sale Price]) - RELATED(Products[Cost Price])) * Orders[Product Quantity]
+    ***<p style="text-align: center;">Profit YTD = 
+CALCULATE(
+    [Total Profit],
+    DATESYTD(Dates[Date])
 )***</p>
 - After this, the following DAX expression was used to create the Country column in the Stores table:
 
@@ -192,11 +190,16 @@ The following image shows the executive summary page at this point:
 
     - Following this the previous quarter measures were calculates which can be seen below for the previous quarter revenue:
 
-    ***<p style="text-align: center;">Current Quarter Revenue = TOTALQTD(SUMX(Orders, Orders[Product Quantity] * RELATED(Products[Sale Price])), Dates[Date])***</p>
+    ***<p style="text-align: center;">Previous Quarter Revenue = 
+VAR CurrentQuarterStart = MAX(Dates[Start of Quarter])
+VAR PreviousQuarterStart = EDATE(CurrentQuarterStart, -3)
+VAR PreviousQuarterEnd = EDATE(CurrentQuarterStart, -1)
+RETURN
+CALCULATE([Total Revenue], Dates[Start of Quarter] = PreviousQuarterStart)***</p>
 
     - Finally to create the target, for the example of revenue, the following DAX formula was used:
 
-    ***<p style="text-align: center;">Revenue Quarterly Target = 'Measures Table'[Current Quarter Revenue] * 1.1***</p>
+    ***<p style="text-align: center;">Revenue Quarterly Target = 'Measures Table'[Previous Quarter Revenue] * 1.1***</p>
 
     - This was repeated for profit and total orders to create the gauges.
 - Following this an areas chart with the x-axis set as Dates[Start of Quarter], the y-axis values set as Total Revenue
@@ -236,7 +239,14 @@ The following image shows the product detail page at this point:
 - Next a multi-select tile slicer was included to select between country.
 - Following this a drill through page was made for each individual store. This displays:
     - the store name and location on cards.
-    - a gauge which includes the current profit YTD and revenue YTD. The targets are set to 20 % year-on-year increase from previous year YTD values.
+    - a gauge which includes the current profit YTD and revenue YTD. The targets are set to 20 % year-on-year increase from previous year YTD values. The following dax formula was used to create the target for the example of profit YTD:
+
+    ***<p style="text-align: center;">Profit YTD Target = 
+CALCULATE(
+    [Total Profit],
+    SAMEPERIODLASTYEAR(DATESYTD(Dates[Date]))
+) * 1.2***</p>
+
     - a column chart shows the orders by product type.
     - a table shows the top 5 products and their profit YTD, number of orders and total revenue.
     - underneath the table are two cards showing that stores top pproduct and its profit YTD.
