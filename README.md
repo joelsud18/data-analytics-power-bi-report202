@@ -11,6 +11,7 @@ By **Joel Sud**
     - [Milestone 3](#milestone-3)
     - [Milestone 5](#milestone-5)
     - [Milestone 6](#milestone-6)
+    - [Milestone 7](#milestone-7)
 
 ## Description: 
 This is an Ai Core project with the aim of conducting data analysis on a Orders database in Power BI.
@@ -33,10 +34,14 @@ This is an Ai Core project with the aim of conducting data analysis on a Orders 
     - data_model.png
     - customer_detail.png
     - executive_summary.png
+    - product_detail.png
+    - theme.json
+    - navigation_bar_images
 
 ### Understanding the Files:
 - **data_analytics_report.pbix**: This is the Power BI file which contains the data models, queries and report with visuals.
 - **subsidiary_material**: This is a folder that contains subsidiary material such as .png screenshots of the data model or report.
+- **theme.json**: This contains the power bi report theme used.
 
 ## Project Documentation
 
@@ -173,3 +178,51 @@ The following image shows the customer detail page at this point:
 The following image shows the executive summary page at this point:
 
 ![Data Model](subsidiary_material/executive_summary.png)
+
+### Milestone 7:
+
+- This milestone looked at the product detail page, to start with three gauges were created. For these the current quarterly revenue, profit and orders were tracked against 10 % quarter on quarter targets.
+
+    - To create the current quarter measures, the following DAX formula was used for the example of revenue:
+
+    ***<p style="text-align: center;">Current Quarter Revenue = TOTALQTD(SUMX(Orders, Orders[Product Quantity] * RELATED(Products[Sale Price])), Dates[Date])***</p>
+
+    - Following this the previous quarter measures were calculates which can be seen below for the previous quarter revenue:
+
+    ***<p style="text-align: center;">Current Quarter Revenue = TOTALQTD(SUMX(Orders, Orders[Product Quantity] * RELATED(Products[Sale Price])), Dates[Date])***</p>
+
+    - Finally to create the target, for the example of revenue, the following DAX formula was used:
+
+    ***<p style="text-align: center;">Revenue Quarterly Target = 'Measures Table'[Current Quarter Revenue] * 1.1***</p>
+
+    - This was repeated for profit and total orders to create the gauges.
+- Following this an areas chart with the x-axis set as Dates[Start of Quarter], the y-axis values set as Total Revenue
+and the Legend as Products[Category] was created.
+- Following this a table wss created displaying the top 10 product descriptions by revenue (where data bars were added), showing their total orders, profit per order and total customers.
+- Two cards were added to highlight the top product, one card gives the product description, the other its revenue. To get these values the following DAX expressions were used:
+
+    ***<p style="text-align: center;">Top Product = 
+TOPN(
+   1,
+   VALUES(Products[Description]),
+   [Total Revenue], DESC
+)***</p>
+
+    ***<p style="text-align: center;">Total Revenue by Top Product = 
+CALCULATE(
+    [Total Revenue], 
+    TOPN(1, VALUES(Products[Description]), [Total Revenue], DESC)
+)***</p>
+- After this a scatter graph was added to compare item profitaility with the total quantity ordered. 
+    - The first step was adding a profit per item column to the products table using the following formula:
+
+    ***<p style="text-align: center;">Profit Per Item = Products[Sale Price] - Products[Cost Price]***</p>
+
+    - The next step involved setting the values as the product descriptions, the x-axis as the profit per item, the y-axis as the total orders and the legend as product category.
+- The next step was to add a slicer panel, to do this two buttons were created; the slicer button which was given a tool tip and action to open a bookmark where the slicer panel was open; and a 'back' button on the panel itslef, which was given a tool tip and action to open a book mark where the slicer panel was not visible. in the slicer panel there were two vertical list slicers, one to filter the page by country and one by product category. This can be seen below:
+
+    ![Data Model](subsidiary_material/product_detail_slicer_panel.png)
+
+The following image shows the product detail page at this point:
+
+![Data Model](subsidiary_material/product_detail.png)
