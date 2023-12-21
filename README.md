@@ -12,6 +12,7 @@ By **Joel Sud**
     - [Milestone 5](#milestone-5)
     - [Milestone 6](#milestone-6)
     - [Milestone 7](#milestone-7)
+    - [Milestone 8](#milestone-8)
 
 ## Description: 
 This is an Ai Core project with the aim of conducting data analysis on a Orders database in Power BI.
@@ -35,6 +36,8 @@ This is an Ai Core project with the aim of conducting data analysis on a Orders 
     - customer_detail.png
     - executive_summary.png
     - product_detail.png
+    - stores_map.png
+    - drill_through_page.png
     - theme.json
     - navigation_bar_images
 
@@ -226,3 +229,24 @@ CALCULATE(
 The following image shows the product detail page at this point:
 
 ![Data Model](subsidiary_material/product_detail.png)
+
+### Milestone 8:
+
+- The first stage involved adding the map visual to the stores map page. For this the geography hierarchy was assigned to the location and profit YTD to the bubble size.
+- Next a multi-select tile slicer was included to select between country.
+- Following this a drill through page was made for each individual store. This displays:
+    - the store name and location on cards.
+    - a gauge which includes the current profit YTD and revenue YTD. The targets are set to 20 % year-on-year increase from previous year YTD values.
+    - a column chart shows the orders by product type.
+    - a table shows the top 5 products and their profit YTD, number of orders and total revenue.
+    - underneath the table are two cards showing that stores top pproduct and its profit YTD.
+    
+    This drill through page can be seen below:
+
+    ![Data Model](subsidiary_material/drill_through_page.png)
+
+- Finally a tooltip page was created with the profit YTD guage which will be used as a tool tip for each store.
+
+The following image shows the stores map page at this point:
+
+![Data Model](subsidiary_material/stores_map.png)
